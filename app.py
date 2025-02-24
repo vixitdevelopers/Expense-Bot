@@ -44,7 +44,11 @@ if c.fetchone()[0] == 0:
 
 print('initializing classification model...')
 # Initialize the zero-shot classifier using a multilingual model for better Hebrew support.
-zero_shot_classifier = pipeline("zero-shot-classification", model="facebook/bart-large-mnli")
+zero_shot_classifier = pipeline(
+    "zero-shot-classification",
+    model="valhalla/distilbart-mnli-12-3",
+    # tokenizer_kwargs={"use_fast": False}  # if needed
+)
 print('done init.')
 
 
@@ -192,4 +196,5 @@ def whatsapp():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000, debug=True)
+    port = int(os.environ.get("PORT", 10000))  # Use Render's port or default to 10000
+    app.run(host="0.0.0.0", port=port, debug=False)
